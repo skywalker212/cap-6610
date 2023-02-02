@@ -1,0 +1,24 @@
+% THIS TEMPLATE IS A WORK IN PROGRESS
+
+\documentclass{article}
+
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+
+\fancypagestyle{firstpage}{%
+  \lhead{CAP6610 Home Work 1 Report}
+  \rhead{Akash Gajjar}
+}
+
+\begin{document}
+\thispagestyle{firstpage}
+
+
+\section*{Implementation}
+
+For the solution I have used Python version 3.8.10 . For operations related to linear algebra and to generate samples from Gaussian distribution with various parameters I am using \emph{numpy}, to plot the graphs from results I am using \emph{matplotlib}. I have implemented multiple functions to generate data and to perform Regression or Ridge Regression on the data and calculate the L2 distance between $\hat{\Theta}$ and $\Theta^{*}$. The function to perform the regression is implemented in such a way that if $N<K$ then it will perform Ridge Regression otherwise it will perform Regression using OLS.
+
+\section*{Graphs}
+
+I have noticed that when $N<K$, sometimes we are not able to find the inverse of the matrix $X^{T}X$ or even if we are able to find the inverse of the matrix, the values are too high which results in L2 distance being very high. Below are 
+\end{document}
