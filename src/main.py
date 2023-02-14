@@ -37,11 +37,11 @@ total_test_images = len(y_test)
 
 
 #
-# Show 10 random training and 5 random test images 
+# Show 5 random training and 5 random test images 
 #
 images_2_show = []
 titles_2_show = []
-for i in range(0, 10):
+for i in range(0, 5):
     r = random.randint(1, total_train_images)
     images_2_show.append(x_train[r])
     titles_2_show.append('training image [' + str(r) + '] = ' + str(y_train[r]))    
