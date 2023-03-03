@@ -63,7 +63,10 @@ However, it's worth noting that constructing a network with 16 gates that can im
 Depending on the boolean function, there may be a case where the K-map reduces the whole function to a single gate.
 
 \section*{Question 2 Answer}
+Here is the implementation code
+\lstinputlisting[language=Python]{code.py}
 
+As we increase the number of epochs, the accuracy of the model increases. For example, for 10 epochs the accuracy is around $65\%$, for 100 epochs the accuracy is around $80\%$, and for 1000 epochs the accuracy is around $95\%$. Learning rate and the threshold at which we convert the output to label also changes the accuracy of the model. I have found that initializing the weights with values from the uniform distribution $[-1,1]$ works well.
 \section*{Question 3 Answer}
 
 The output can be expressed as the following function,
