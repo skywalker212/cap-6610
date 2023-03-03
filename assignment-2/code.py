@@ -23,7 +23,7 @@ eta = 0.5
 Threshold = 0.5
 epochs = 1000
 
-# Initialize weights
+# Initialize weights from uniform distribution [0, 1)
 W_i = np.random.default_rng().uniform(0, 1, (11, 1))
 W_ij = np.random.default_rng().uniform(0, 1, (10, N+1))
 
@@ -57,7 +57,7 @@ for _ in range(epochs):
         delta_W_ij = eta * (t - o) * o * (1 - o) * np.dot((W_i * H_i * (1-H_i))[:-1, :], x.T)
         W_i += delta_W_i
         W_ij += delta_W_ij
-    print("Avg Error after epoch: ", E/D)
+    # print("Avg Error after epoch: ", E/D)
 
 
 # Forward prop for testing
