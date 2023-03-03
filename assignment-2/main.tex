@@ -10,6 +10,8 @@
 \usepackage{listings}
 \usepackage{xcolor}
 
+\usepackage{amsmath}
+
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
@@ -62,4 +64,107 @@ Depending on the boolean function, there may be a case where the K-map reduces t
 
 \section*{Question 2 Answer}
 
+\section*{Question 3 Answer}
+
+The output can be expressed as the following function,
+
+\begin{displaymath}
+    f(x_1,\dots,x_n) = 
+    \begin{cases} 
+        \mbox{1,} & \mbox{if } \sum x_i < \frac{n}{2}, i = \{1\dots n\} \\ 
+        \mbox{0,} & \mbox{otherwise} 
+    \end{cases} 
+\end{displaymath}
+%
+The perceptron models the function,
+\begin{displaymath}
+    \hat{f}(x_1,\dots,x_n) = threshold(\omega^T X + b)
+\end{displaymath}
+
+where,
+\begin{displaymath}
+    threshold(x) = 
+    \begin{cases}
+        \mbox{1,} & \mbox{if } x > 0 \\
+        \mbox{0,} & \mbox{otherwise}
+    \end{cases}
+\end{displaymath}
+
+and,
+\begin{displaymath}
+    X = \begin{bmatrix}x_1\\ . \\ . \\x_n\end{bmatrix},\\
+    \omega = \begin{bmatrix}\omega_1\\ . \\ . \\\omega_n\end{bmatrix} \\
+    b = \mbox{bias}
+\end{displaymath}
+%
+If we initialize all the weights ($\omega_1,\dots,\omega_n$) as -1 and bias as $\frac{n}{2}$ then the $\hat{f}$ would return 1 if more of  $x_i$ have value 0 than value 1, otherwise returns 0.
+
+\section*{Question 4 Answer}
+
+Here we have our error defined as mean squared error,
+
+\begin{equation}
+\label{eq:1}
+    E = \frac{1}{2}(t - o)^2
+\end{equation}
+
+where,
+\begin{displaymath}
+    t = \mbox{real valued output}
+\end{displaymath}
+\begin{equation}
+\label{eq:2}
+    o = \mbox{artificial neuron output} = e^{net}
+\end{equation}
+\begin{equation}
+\label{eq:3}
+    net = wx, \mbox{where } w = \mbox{weight, } x = \mbox{input}
+\end{equation}
+%
+and the weight update would be given by the equation
+\begin{displaymath}
+    w_i \leftarrow w_i + \Delta w
+\end{displaymath}
+\begin{displaymath}
+    \Delta w = - \eta \frac{dE}{dw}
+\end{displaymath}
+%
+and we can rewrite $\frac{dE}{dw}$ as
+\begin{equation}
+    \label{eq:4}
+    \frac{dE}{dw} = \frac{dE}{do} \frac{do}{dnet} \frac{dnet}{dw}
+\end{equation}
+%
+from \eqref{eq:1} we get,
+\begin{equation}
+    \label{eq:4}
+    \frac{dE}{do} = o - t
+\end{equation}
+%
+from \eqref{eq:2} we get,
+\begin{equation}
+    \label{eq:5}
+    \frac{do}{dnet} = o
+\end{equation}
+%
+from \eqref{eq:3} we get,
+\begin{equation}
+    \label{eq:6}
+    \frac{dnet}{dw} = x
+\end{equation}
+%
+now plugging in these values to \eqref{eq:4} we get,
+
+\begin{displaymath}
+    \frac{dE}{dw} = (o - t) \times o \times x
+\end{displaymath}
+%
+so the weight update equation would be
+\begin{displaymath}
+    w \leftarrow w + \eta ox(t - o)
+\end{displaymath}
+
+where w = weight, $\eta$ is the learning rate, $x$ is the input, $t$ is the real valued output, $o$ is the output from the artificial neuron.
+
+I am not including the bias weight since the question asks to model an artificial neuron with a single weight.
 \end{document}
