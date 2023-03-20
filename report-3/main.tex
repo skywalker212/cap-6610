@@ -1,0 +1,79 @@
+% THIS TEMPLATE IS A WORK IN PROGRESS
+
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage{hyperref}
+
+% FOR CODE
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{xparse}
+\NewDocumentCommand{\codeword}{v}{%
+\texttt{{#1}}%
+}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+% 
+
+\fancypagestyle{firstpage}{%
+  \lhead{CAP6610 Project Progress Report}
+  \rhead{Akash Gajjar}
+}
+
+\begin{document}
+\thispagestyle{firstpage}
+
+\section{Summary}
+
+Previously I was able to generate some samples using GAN, but I wasn't able to do substantial improvements on the model by tuning the hyperparameters so I have started working on generating samples using VAE. I have tried reading the VAE paper \cite{1} but couldn't make a lot of sense out of it so I re-watched the lecture videos and also looked into some YouTube videos about VAE to understand the mathematics behind it. From what I can gather, the VAE would have three parts 
+\begin{enumerate}
+    \item \textbf{An encoder}: which encodes the input samples into a latent space in a lower dimension
+    \item \textbf{A decoder}: which takes the input from the latent space and generates an output
+    \item \textbf{Loss function}: a way to calculate loss which will be used to run the optimizer
+\end{enumerate}
+In this setting, the VAE network would learn the underlying distribution of the data and would be able to sample new data from that distribution using the trained decoder. 
+
+After finding out about the high level concept of the VAE, I have started implementing the VAE in \codeword{python} using \codeword{pytorch}. I feel that I can learn about the VAEs in detail by implementing it and running into some issues which require me to understand some concept in detail.
+
+Instead of starting from scratch, I am taking the \codeword{VAE} implementation given in the \codeword{pytorch} examples \cite{2} as a reference. I will be reusing the batch generator that I implemented when implementing the GAN. Although I have started implementing the VAE, I don't have any demonstrable artifacts right now.
+
+
+\section{Next Steps}
+
+As most of my time was spent on reading about VAEs and understanding how they work. My next step is to implement a working prototype of VAE to generate handwritten digits. I have sketched out the architecture of the VAE and I implementing the same using \codeword{pytorch}. Once I am done implementing the VAE, I would fine tune the hyperparameters of both the VAE and the GAN to generate the best samples and then I would compare the results from both to draw some conclusions.
+
+
+\begin{thebibliography}{1}
+
+\bibitem{1} \url{https://arxiv.org/pdf/1312.6114.pdf}
+\bibitem{2} \url{https://github.com/pytorch/examples/tree/main/vae}
+\end{thebibliography}
+
+\end{document}

@@ -53,12 +53,7 @@ For a boolean function on 5 variables, the Karnaugh map has 32 cells, correspond
 
 The maximum number of minterms in the Karnaugh map of a boolean function on 5 variables is 16. This is because if a boolean function on 5 variables has more than 16 minterms (i.e., more than 16 ones in its Karnaugh map), then at least one pair of adjacent cells can be grouped together to form a larger group of multiple cells that can be covered by a single gate. Therefore, the maximum number of gates required in a single hidden layer to implement a boolean function with 5 inputs is 16.
 
-However, it's worth noting that constructing a network with 16 gates that can implement a complex function can be difficult in practice, and a more efficient network may require fewer gates. Increasing the number of layers in the network can allow for a more efficient implementation of the function. By adding additional layers to the network, the gates in each layer can be used to combine the output of gates in the previous layer, creating a hierarchical structure that can represent more complex functions with fewer gates. Any boolean function on $n$ variables can be expressed as a composition of boolean functions on two variables using the Boolean Algebra. We can construct the network like a binary tree, that would result in a tree with total 4 nodes and $\log_{2} 5 \approx 3$ layers. This is what the network would look like 
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=2.5in]{images/network.png}
-\end{figure}
+However, it's worth noting that constructing a network with 16 gates that can implement a complex function can be difficult in practice, and a more efficient network may require fewer gates. Increasing the number of layers in the network can allow for a more efficient implementation of the function. By adding additional layers to the network, the gates in each layer can be used to combine the output of gates in the previous layer, creating a hierarchical structure that can represent more complex functions with fewer gates. Any boolean function on $n$ variables can be expressed as a composition of boolean functions on two variables using the Boolean Algebra. We can construct the network like a binary tree, that would result in a tree with total 12 ($3*(n-1)$) nodes and $2 * \log_{2} 5 \approx 5$ layers.
 
 Depending on the boolean function, there may be a case where the K-map reduces the whole function to a single gate.
 
@@ -108,20 +103,20 @@ Here we have our error defined as mean squared error,
 
 \begin{equation}
 \label{eq:1}
-    E = \frac{1}{2}(t - o)^2
+    E = \frac{1}{n}\sum (o_k - y_k)^2
 \end{equation}
 
 where,
 \begin{displaymath}
-    t = \mbox{real valued output}
+    y_k = \mbox{real valued output for }k^{th} \mbox{ datapoint}
 \end{displaymath}
 \begin{equation}
 \label{eq:2}
-    o = \mbox{artificial neuron output} = e^{net}
+    o_k = \mbox{artificial neuron output for }k^{th} \mbox{ datapoint} = e^{net_k}
 \end{equation}
 \begin{equation}
 \label{eq:3}
-    net = wx, \mbox{where } w = \mbox{weight, } x = \mbox{input}
+    net_k = wx_k, \mbox{where } w = \mbox{weight, } x = k^{th}\mbox{ input}
 \end{equation}
 %
 and the weight update would be given by the equation
@@ -129,45 +124,45 @@ and the weight update would be given by the equation
     w_i \leftarrow w_i + \Delta w
 \end{displaymath}
 \begin{displaymath}
-    \Delta w = - \eta \frac{dE}{dw}
+    \Delta w = - \eta \frac{\partial E}{\partial w}
 \end{displaymath}
 %
-and we can rewrite $\frac{dE}{dw}$ as
+and we can rewrite $\frac{\partial E}{\partial w}$ as
 \begin{equation}
     \label{eq:4}
-    \frac{dE}{dw} = \frac{dE}{do} \frac{do}{dnet} \frac{dnet}{dw}
+    \frac{\partial E}{\partial w} = \frac{\partial E}{\partial o_k} \frac{\partial o_k}{\partial net_k} \frac{\parital net_k}{\partial w}
 \end{equation}
 %
 from \eqref{eq:1} we get,
 \begin{equation}
     \label{eq:4}
-    \frac{dE}{do} = o - t
+    \frac{\partial E}{\partial o_k} = \frac{2}{n} (o_k - y_k)
 \end{equation}
 %
 from \eqref{eq:2} we get,
 \begin{equation}
     \label{eq:5}
-    \frac{do}{dnet} = o
+    \frac{\partial o_k}{\partial net_k} = o_k
 \end{equation}
 %
 from \eqref{eq:3} we get,
 \begin{equation}
     \label{eq:6}
-    \frac{dnet}{dw} = x
+    \frac{\partial net_k}{\partial w} = x_k
 \end{equation}
 %
-now plugging in these values to \eqref{eq:4} we get,
+need so sum up for all the $x_k$,so plugging in these values to \eqref{eq:4} we get,
 
 \begin{displaymath}
-    \frac{dE}{dw} = (o - t) \times o \times x
+    \frac{\partial E}{\partial w} = \frac{2}{n} \sum x_k o_k (o_k - y_k)
 \end{displaymath}
 %
-so the weight update equation would be
+the weight update equation would be,
 \begin{displaymath}
-    w \leftarrow w + \eta ox(t - o)
+    w \leftarrow w - \eta \frac{2}{n} \sum x_k o_k (o_k - y_k)
 \end{displaymath}
 
-where w = weight, $\eta$ is the learning rate, $x$ is the input, $t$ is the real valued output, $o$ is the output from the artificial neuron.
+where $w$ = weight, $\eta$ is the learning rate, $n$ is total number of samples, $x_k$ is the $k^{th}$ input, $y_k$ is the $k^{th}$ real valued output, $o_k$ is the $k^{th}$ output from the artificial neuron.
 
 I am not including the bias weight since the question asks to model an artificial neuron with a single weight.
 \end{document}
