@@ -1,0 +1,70 @@
+% THIS TEMPLATE IS A WORK IN PROGRESS
+
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage{hyperref}
+
+% FOR CODE
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{xparse}
+\NewDocumentCommand{\codeword}{v}{%
+\texttt{{#1}}%
+}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+% 
+
+\fancypagestyle{firstpage}{%
+  \lhead{CAP6610 Project Progress Report}
+  \rhead{Akash Gajjar}
+}
+
+\begin{document}
+\thispagestyle{firstpage}
+
+\section{Summary}
+
+Even though I was not able to fully understand the mathematics behind the VAE, I understood how the model should be set up so that I am able to train the VAE on MNIST dataset and generate some hand written digits. I also found that \codeword{pytorch} has a \codeword{datasets} class which contains standard data loaders for various datasets so I used that one instead of my custom data loader since it would be more compatible with \codeword{pytorch}. I was able to implement the VAE using \codeword{pytorch} and taking some help from \codeword{stackoverflow}. I am generating the samples from 20-D latent space. Given that, My model has the following architecture $784 \rightarrow 400 \rightarrow 200 \rightarrow 20 \rightarrow 200 \rightarrow 400 \rightarrow 784$. The appendix in the paper \cite{1} was helpful in clearing out some confusion as well. I trained the model on training data for 30 epochs, 128 batch size, and $10^{-3}$ learning rate. Also, I used ReLU activation function and adam optimizer as I found that these make the network converge faster.
+
+\se
+
+\section{Next Steps}
+
+As most of my time was spent on reading about VAEs and understanding how they work. My next step is to implement a working prototype of VAE to generate handwritten digits. I have sketched out the architecture of the VAE and I implementing the same using \codeword{pytorch}. Once I am done implementing the VAE, I would fine tune the hyperparameters of both the VAE and the GAN to generate the best samples and then I would compare the results from both to draw some conclusions.
+
+
+\begin{thebibliography}{1}
+
+\bibitem{1} \url{https://arxiv.org/pdf/1312.6114.pdf}
+
+\end{thebibliography}
+
+\end{document}
