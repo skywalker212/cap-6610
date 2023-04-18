@@ -18,9 +18,23 @@ parser.add_argument(
 parser.add_argument(
     "--epochs",
     type=int,
-    default=30,
+    default=10,
     metavar="N",
     help="number of epochs to train (default: 10)",
+)
+parser.add_argument(
+    "--nz",
+    type=int,
+    default=100,
+    metavar="N",
+    help="dimensionality of the latent space",
+)
+parser.add_argument(
+    "--lr", 
+    type=float, 
+    default=0.001, 
+    metavar="0.XYZW",
+    help="adam: learning rate"
 )
 parser.add_argument(
     "--no-cuda", action="store_true", default=False, help="disables CUDA training"
@@ -55,7 +69,9 @@ else:
 kwargs = {"num_workers": 1, "pin_memory": True} if args.cuda else {}
 curr_dirname = os.path.dirname(__file__)
 data_directory = os.path.join(curr_dirname, "data")
-results_directory = os.path.join(curr_dirname, "results")
+results_directory_name = "results/vae"
+os.makedirs(results_directory_name, exist_ok=True)
+results_directory = os.path.join(curr_dirname, results_directory_name)
 train_loader = torch.utils.data.DataLoader(
     datasets.MNIST(
         data_directory, train=True, download=False, transform=transforms.ToTensor()
@@ -78,9 +94,9 @@ class VAE(nn.Module):
 
         self.fc1 = nn.Linear(784, 400)
         self.fc2 = nn.Linear(400, 200)
-        self.fc31 = nn.Linear(200, 20)
-        self.fc32 = nn.Linear(200, 20)
-        self.fc4 = nn.Linear(20, 200)
+        self.fc31 = nn.Linear(200, args.nz)
+        self.fc32 = nn.Linear(200, args.nz)
+        self.fc4 = nn.Linear(args.nz, 200)
         self.fc5 = nn.Linear(200, 400)
         self.fc6 = nn.Linear(400, 784)
 
@@ -106,7 +122,7 @@ class VAE(nn.Module):
 
 
 model = VAE().to(device)
-optimizer = optim.Adam(model.parameters(), lr=1e-3)
+optimizer = optim.Adam(model.parameters(), lr=args.lr)
 
 
 # Reconstruction + KL divergence losses summed over all elements and batch
@@ -179,7 +195,7 @@ if __name__ == "__main__":
         train(epoch)
         test(epoch)
         with torch.no_grad():
-            sample = torch.randn(64, 20).to(device)
+            sample = torch.randn(64, args.nz).to(device)
             sample = model.decode(sample).cpu()
             save_image(
                 sample.view(64, 1, 28, 28),
