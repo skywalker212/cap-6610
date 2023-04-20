@@ -52,6 +52,20 @@ parser.add_argument(
     metavar="N",
     help="how many batches to wait before logging training status",
 )
+parser.add_argument(
+    "--b1", 
+    type=float, 
+    default=0.5, 
+    metavar="0.X",
+    help="adam: decay of first order momentum of gradient"
+)
+parser.add_argument(
+    "--b2", 
+    type=float, 
+    default=0.9999, 
+    metavar="0.XYZW",
+    help="adam: decay of second order momentum of gradient"
+)
 args = parser.parse_args()
 args.cuda = not args.no_cuda and torch.cuda.is_available()
 use_mps = not args.no_mps and torch.backends.mps.is_available()
@@ -122,7 +136,7 @@ class VAE(nn.Module):
 
 
 model = VAE().to(device)
-optimizer = optim.Adam(model.parameters(), lr=args.lr)
+optimizer = optim.Adam(model.parameters(), lr=args.lr, betas=(args.b1, args.b2))
 
 
 # Reconstruction + KL divergence losses summed over all elements and batch
