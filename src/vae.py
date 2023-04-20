@@ -37,6 +37,20 @@ parser.add_argument(
     help="adam: learning rate"
 )
 parser.add_argument(
+    "--b1", 
+    type=float, 
+    default=0.5, 
+    metavar="0.X",
+    help="adam: decay of first order momentum of gradient"
+)
+parser.add_argument(
+    "--b2", 
+    type=float, 
+    default=0.9999, 
+    metavar="0.XYZW",
+    help="adam: decay of second order momentum of gradient"
+)
+parser.add_argument(
     "--no-cuda", action="store_true", default=False, help="disables CUDA training"
 )
 parser.add_argument(
@@ -122,7 +136,7 @@ class VAE(nn.Module):
 
 
 model = VAE().to(device)
-optimizer = optim.Adam(model.parameters(), lr=args.lr)
+optimizer = optim.Adam(model.parameters(), lr=args.lr, betas=(args.b1, args.b2))
 
 
 # Reconstruction + KL divergence losses summed over all elements and batch
